@@ -2,6 +2,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
+using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour
 {
@@ -9,9 +11,9 @@ public class GameController : MonoBehaviour
     private Sprite bgImage;
     public Sprite[] puzzles = new Sprite[9];
     public List<Sprite> gamePuzzles = new List<Sprite>();
-
     public List<Button> crds = new List<Button>();
-
+    public GameObject selectPanel;
+    public GameObject finishPanel;
     private bool firstGuess, secondGuess;
     private string firstGuessPuzzle, secondGuessPuzzle;
 
@@ -20,8 +22,18 @@ public class GameController : MonoBehaviour
     private int countCorrectGuesses;
     private int gameGuesses;
 
-    void Start()
+    /*void Start()
     {
+        GetCards();
+        AddListeners();
+        AddGamePuzzle();
+        Suffle(gamePuzzles);
+        gameGuesses = gamePuzzles.Count / 2;
+    }*/
+    public void StartGame()
+    {
+        Debug.Log("Iniciou a func StartGame no Game Controller");
+        selectPanel.SetActive(false);
         GetCards();
         AddListeners();
         AddGamePuzzle();
@@ -111,6 +123,7 @@ public class GameController : MonoBehaviour
         {
             Debug.Log("Fim de jogo");
             Debug.Log("Voce tentou " + gameGuesses + " vezes para conseguir finalizar o jogo.");
+            finishPanel.SetActive(true);
         }
         else
         {
@@ -126,5 +139,14 @@ public class GameController : MonoBehaviour
             list[i] = list[randomIndex];
             list[randomIndex] = temp;
         }
+    }
+    public void RestartGame()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name); // Recarrega a cena atual
+    }
+    public void QuitGame()
+    {
+        Application.Quit(); // Sai do jogo
+        Debug.Log("O jogo foi encerrado."); // Mensagem para o editor
     }
 }
